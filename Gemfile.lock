@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    PriorityQueue (0.1.2)
     actioncable (6.0.3.2)
       actionpack (= 6.0.3.2)
       nio4r (~> 2.0)
@@ -62,6 +63,9 @@ GEM
     byebug (11.1.3)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
+    dijkstra_graph (0.1.1)
+      PriorityQueue (~> 0.1)
+      weighted_graph (~> 0.1)
     erubi (1.9.0)
     ffi (1.13.1)
     globalid (0.4.2)
@@ -141,6 +145,7 @@ GEM
     websocket-driver (0.7.2)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    weighted_graph (0.1.2)
     zeitwerk (2.3.1)
 
 PLATFORMS
@@ -149,6 +154,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
+  dijkstra_graph
   listen (~> 3.2)
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.2)
