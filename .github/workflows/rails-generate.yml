@@ -1,0 +1,55 @@
+name: Rails Generate
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  ack:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.title, 'Generate Repository Content With `rails generate`')
+    steps:
+    - name: Parse Event For Environment Variables
+      run: |
+        echo ::set-env name=GITHUB_ACTOR::$(printf ${GITHUB_ACTOR})
+        echo ::set-env name=GITHUB_REPOSITORY::$(printf ${GITHUB_REPOSITORY})
+    - name: Acknowledge chatop on calling Issue
+      uses: octokit/request-action@v1.1.0
+      with:
+        route: POST /repos/:owner/:repo/issues/${{ github.event.issue.number }}/comments
+        body: |
+          👋 @${{ env.GITHUB_ACTOR }} - Starting Action.
+          Follow along on the [Actions tab](https://github.com/${{ env.GITHUB_REPOSITORY }}/actions).
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  rails-generate:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.title, 'Generate Repository Content With `rails generate`')
+    steps:
+    - name: Parse Event For Environment Variables
+      run: |
+        echo ::set-env name=GITHUB_ACTOR::$(printf ${GITHUB_ACTOR})
+    - name: Checkout Branch To Make Edits
+      uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6
+    - name: Install Project
+      run: sudo apt-get install -y libsqlite3-dev && bundle install
+    - name: Rails Generate
+      run: bundle exec rails generate ${{ github.event.issue.body }}
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v2.8.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: Auto-generated `rails generate ...`
+        author-email: hubot@github.com
+        author-name: Hubot
+        branch: auto-rails-generate
+        branch-suffix: random
+        title: Generate Rails Resources
+        body: |
+          Closes ${{ github.event.issue.html_url }}
+          /cc @${{ env.GITHUB_ACTOR }}

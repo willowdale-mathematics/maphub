@@ -1,0 +1,25 @@
+name: Acceptance Tests
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+
+  acceptance-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6
+    - name: Install Project
+      run: sudo apt-get install -y libsqlite3-dev && bundle install && bundle exec rails db:migrate
+    - name: Run Acceptance Tests
+      shell: bash
+      run: |
+        timeout 10 bundle exec rails server &
+        sleep 3
+        curl -vvv http://localhost:3000
