@@ -1,9 +1,26 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  paths: 
+bellevue:
+  name: Bellevue
+  paths:
+    buildings:
+      a:
+        b: 2
+        c: 5
+      b:
+        c: 2
+      c:
+        a: 8
 
-two:
-  name: MyString
-  paths: 
+sf:
+  name: San Francisco
+  paths:
+    buildings:
+      a:
+        b: 1
+      b:
+        a: 2
+      c:
+        d: 3
+      d:
+        c: 4
